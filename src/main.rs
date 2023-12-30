@@ -148,22 +148,6 @@ fn main() -> Result<()> {
                 type_idents.push(name);
                 Some(vec![(name,re)])
             } else if {
-                let pattern="[^a-zA-Z_]static[^a-zA-Z_]";
-                let re=Regex::new(&pattern).unwrap();
-                re.is_match(&blocks[i].lines().filter(|line| !line.contains("///"))
-                .fold(String::new(), |lib, str| lib+str+"\n"))
-            } {
-                let pattern="static +([^ :]+) *:";
-                let re=Regex::new(&pattern).unwrap();
-                let name=re.captures(&blocks[i]).unwrap().get(1).unwrap().as_str();
-                let pattern=format!("[^a-zA-Z_]{}[^a-zA-Z_]", name);
-                let re=Regex::new(&pattern).unwrap();
-                if re.is_match(&submit_file) {
-                    needed[i]=true;
-                }
-                type_idents.push(name);
-                Some(vec![(name,re)])
-            } else if {
                 let pattern="[^a-zA-Z_]fn[^a-zA-Z_]";
                 let re=Regex::new(&pattern).unwrap();
                 re.is_match(&blocks[i].lines().filter(|line| !line.contains("///"))
@@ -173,6 +157,22 @@ fn main() -> Result<()> {
                 let re=Regex::new(&pattern).unwrap();
                 let name=re.captures(&blocks[i]).unwrap().get(1).unwrap().as_str();
                 let pattern=format!("[^a-zA-Z_]{} *\\(", name);
+                let re=Regex::new(&pattern).unwrap();
+                if re.is_match(&submit_file) {
+                    needed[i]=true;
+                }
+                type_idents.push(name);
+                Some(vec![(name,re)])
+            } else if {
+                let pattern="((?m)^ *|[^a-zA-Z_])const[^a-zA-Z_]";
+                let re=Regex::new(&pattern).unwrap();
+                re.is_match(&blocks[i].lines().filter(|line| !line.contains("///"))
+                .fold(String::new(), |lib, str| lib+str+"\n"))
+            } {
+                let pattern="const +([^ :]+) *:";
+                let re=Regex::new(&pattern).unwrap();
+                let name=re.captures(&blocks[i]).unwrap().get(1).unwrap().as_str();
+                let pattern=format!("[^a-zA-Z_]{}[^a-zA-Z_]", name);
                 let re=Regex::new(&pattern).unwrap();
                 if re.is_match(&submit_file) {
                     needed[i]=true;
@@ -196,7 +196,7 @@ fn main() -> Result<()> {
                                 re.is_match(&blocks[j].lines().filter(|line| !line.contains("///")).fold(String::new(),
                                 |lib, str| lib+str+"\n"))
                             } {
-                                let pattern="impl(|<[^>]+>) +([^ <{]+) *(<|\\{|f|w)";
+                                let pattern="impl(<[^>]+>)? +([^ <{]+) *(<|\\{|f|w)";
                                 let re=Regex::new(&pattern).unwrap();
                                 let impl_name=re.captures(&blocks[j]).unwrap().get(2).unwrap().as_str();
                                 if name==impl_name {
