@@ -67,7 +67,7 @@ fn main() -> Result<()> {
                 type_idents.push(name);
                 Some(vec![(name,re)])
             } else if {
-                let pattern="[^a-zA-Z_]struct[^a-zA-Z_]";
+                let pattern="((?m)^ *|[^a-zA-Z_])struct[^a-zA-Z_]";
                 let re=Regex::new(&pattern).unwrap();
                 re.is_match(&blocks[i].lines().filter(|line| !line.contains("///"))
                 .fold(String::new(), |lib, str| lib+str+"\n"))
@@ -83,7 +83,7 @@ fn main() -> Result<()> {
                 type_idents.push(name);
                 Some(vec![(name,re)])
             } else if {
-                let pattern="[^a-zA-Z_]trait[^a-zA-Z_]";
+                let pattern="((?m)^ *|[^a-zA-Z_])trait[^a-zA-Z_]";
                 let re=Regex::new(&pattern).unwrap();
                 re.is_match(&blocks[i].lines().filter(|line| !line.contains("///"))
                 .fold(String::new(), |lib, str| lib+str+"\n"))
@@ -116,7 +116,7 @@ fn main() -> Result<()> {
             } {
                 None
             } else if {
-                let pattern="[^a-zA-Z_]type[^a-zA-Z_]";
+                let pattern="((?m)^ *|[^a-zA-Z_])type[^a-zA-Z_]";
                 let re=Regex::new(&pattern).unwrap();
                 re.is_match(&blocks[i].lines().filter(|line| !line.contains("///"))
                 .fold(String::new(), |lib, str| lib+str+"\n"))
@@ -132,7 +132,7 @@ fn main() -> Result<()> {
                 type_idents.push(name);
                 Some(vec![(name,re)])
             } else if {
-                let pattern="[^a-zA-Z_]enum[^a-zA-Z_]";
+                let pattern="((?m)^ *|[^a-zA-Z_])enum[^a-zA-Z_]";
                 let re=Regex::new(&pattern).unwrap();
                 re.is_match(&blocks[i].lines().filter(|line| !line.contains("///"))
                 .fold(String::new(), |lib, str| lib+str+"\n"))
@@ -148,7 +148,7 @@ fn main() -> Result<()> {
                 type_idents.push(name);
                 Some(vec![(name,re)])
             } else if {
-                let pattern="[^a-zA-Z_]fn[^a-zA-Z_]";
+                let pattern="((?m)^ *|[^a-zA-Z_])fn[^a-zA-Z_]";
                 let re=Regex::new(&pattern).unwrap();
                 re.is_match(&blocks[i].lines().filter(|line| !line.contains("///"))
                 .fold(String::new(), |lib, str| lib+str+"\n"))
