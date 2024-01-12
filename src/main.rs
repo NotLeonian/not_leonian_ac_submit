@@ -156,7 +156,7 @@ fn main() -> Result<()> {
                 let pattern="fn +([^ <(]+) *(<|\\(|w)";
                 let re=Regex::new(&pattern).unwrap();
                 let name=re.captures(&blocks[i]).unwrap().get(1).unwrap().as_str();
-                let pattern=format!("[^a-zA-Z_]{} *\\(", name);
+                let pattern=format!("[^a-zA-Z_]{} *(\\(|:)", name);
                 let re=Regex::new(&pattern).unwrap();
                 if re.is_match(&submit_file) {
                     needed[i]=true;
