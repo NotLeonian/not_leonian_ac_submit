@@ -202,7 +202,7 @@ fn main() -> Result<()> {
                                 if name==impl_name {
                                     depends[i].push(j);
                                 } else if {
-                                    let pattern=format!("for +{}", name);
+                                    let pattern=format!("for +(|& *|& *mut +){}", name);
                                     let re=Regex::new(&pattern).unwrap();
                                     !type_idents.contains(&impl_name) && re.is_match(&blocks[j].lines().filter(|line| !line.contains("///"))
                                     .fold(String::new(), |lib, str| lib+str+"\n"))
